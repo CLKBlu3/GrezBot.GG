@@ -59,7 +59,8 @@ void GrezBot::OnStep()
     m_strategy.onFrame();
 
     m_gameCommander.onFrame();
-	//OverlordManager();
+	OverlordManager::onFrame(*this);
+	//Implement this managers for each unit type?
 	//LarvaeManager();
 	//DroneManager();
 	//QueenManager();
@@ -78,20 +79,8 @@ void GrezBot::OnUnitCreated(const sc2::Unit* unit) {
 //Unit Move command
 //@unit unit to move
 //@dest destination
-void GrezBot::UnitMove(const sc2::Unit * unit, const std::vector<sc2::Point2D> & dest) {
-	bool moved = false;
-	//Look if the unit orders contains the move order
-	for (sc2::UnitOrder order : unit->orders) {
-		if (order.ability_id == sc2::ABILITY_ID::MOVE && (unit->pos.x == dest[dest.size()-1].x && unit->pos.y == dest[dest.size() - 1].y)) {
-			moved = true; //moved is completed
-		}
-	}
-	
-	if (!moved) { //lets move it to the next dest
-		for (auto d : dest) {
-			Actions()->UnitCommand(unit, sc2::ABILITY_ID::MOVE, d, true);
-		}
-	}
+void GrezBot::UnitMove(const sc2::Unit * unit, std::vector<sc2::Point2D> & dest) {
+	if (unit->unit_type == sc2::UNIT_TYPEID::ZERG_OVERLORD) OverlordManager::OverlordMove(unit, dest, *this);
 }
 
 void GrezBot::OnGameEnd()

@@ -161,8 +161,8 @@
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>D:\Docs\SC2Bot\SC2 CC\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>D:\Docs\SC2Bot\SC2 CC\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Docs\SC2Bot\GrezBot.GG\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Docs\SC2Bot\GrezBot.GG\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>C:\Libraries\BWAPI_420\lib;$(LibraryPath)</LibraryPath>
