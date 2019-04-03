@@ -12,7 +12,7 @@ void OverlordManager::onFrame(GrezBot& bot) {
 		if (unit.getType().isOverlord()) {
 			if (unit.isIdle()) {
 				//make it do something
-				handleIdleOverlod(unit.getUnitPtr(), bot);
+				HandleIdleOverlod(unit.getUnitPtr(), bot);
 			}
 		}
 	}
@@ -47,7 +47,7 @@ void OverlordManager::OverlordMove(const sc2::Unit * unit, std::vector<sc2::Poin
 
 	if (unit->health < (unit->health_max *0.75f)) {
 		//Scouting overloard has been harassed, back off?
-		if (enemyOnSight(unit->pos, bot)) { //back off
+		if (EnemyOnSight(unit->pos, bot)) { //back off
 			dest.clear(); //clear orders
 			dest.push_back(fleePos(bot)); //Return to base
 			bot.Actions()->UnitCommand(unit, sc2::ABILITY_ID::MOVE, fleePos(bot), true);
@@ -68,7 +68,7 @@ void OverlordManager::OverlordMove(const sc2::Unit * unit, std::vector<sc2::Poin
 	}
 }
 
-bool OverlordManager::enemyOnSight(const sc2::Point2D pos, GrezBot& bot) {
+bool OverlordManager::EnemyOnSight(const sc2::Point2D pos, GrezBot& bot) {
 	for (auto & unit : bot.UnitInfo().getUnits(Players::Enemy))
 	{
 		if (Util::Dist(unit, pos) < distanceTreshold)
@@ -83,7 +83,7 @@ sc2::Point2D OverlordManager::fleePos(GrezBot& bot) {
 	return bot.Bases().getPlayerStartingBaseLocation(Players::Self)->getPosition();
 }
 
-void OverlordManager::handleIdleOverlod(const sc2::Unit* unit, GrezBot& bot)
+void OverlordManager::HandleIdleOverlod(const sc2::Unit* unit, GrezBot& bot)
 {
 	if (unit != nullptr) { //valid and idle Overlord
 		//move it to a new location
@@ -94,11 +94,11 @@ void OverlordManager::handleIdleOverlod(const sc2::Unit* unit, GrezBot& bot)
 			nextExp.y = bot.Bases().getNextExpansion(i).y;
 			nextMove.push_back(nextExp);
 		}
-		addNextMove(unit, nextMove[rand()%nextMove.size()], bot);
+		AddNextMove(unit, nextMove[rand()%nextMove.size()], bot);
 	}
 }
 
-void OverlordManager::addNextMove(const sc2::Unit* unit, const sc2::Point2D dest, GrezBot & bot) {
+void OverlordManager::AddNextMove(const sc2::Unit* unit, const sc2::Point2D dest, GrezBot & bot) {
 	//Overlord may be idle or not!
 	if (unit->orders.empty()) {
 		//unit was idle!

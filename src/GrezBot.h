@@ -68,4 +68,6 @@ public:
 	//Added func
 	void OnUnitCreated(const sc2::Unit* unit);
 	void UnitMove(const sc2::Unit* unit, std::vector<sc2::Point2D> & dest);
+	void BuildWorkers();
+	void BuildHatchery();
 };

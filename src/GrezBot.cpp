@@ -2,7 +2,12 @@
 #include "Util.h"
 #include "OverlordManager.h"
 #include <iostream>
-#include <random>
+
+//MAYBE WORKER CREATION SHOULD BE MANAGED SOMEWHERE ELSE?
+const int MAX_TOTAL_WORKERS = 80; //Expected max workers for zerg [70-80]
+const int MAX_MINERAL_WORKERS = 62; //1-1,5 workers per mineral patch
+const int MAX_GAS_WORKERS = 18; //6 gases x 3 workers at max Saturation
+const int HARASSMENT_WORKERS_EXPECTED = 2; //2*Hatch, expected damage received from harassment (this will be HARDLIMIT = MAX TOTAL + HARASSMENTS_WORKERS)
 
 GrezBot::GrezBot()
     : m_map(*this)
@@ -45,7 +50,7 @@ void GrezBot::OnGameStart()
     m_unitInfo.onStart();
     m_bases.onStart();
     m_workers.onStart();
-
+	//Calculate ExpectedEnemyBases and Race
     m_gameCommander.onStart();
 }
 
@@ -65,6 +70,9 @@ void GrezBot::OnStep()
 	//DroneManager();
 	//QueenManager();
 
+	BuildWorkers();
+	BuildHatchery();
+
     Debug()->SendDebug();
 }
 
@@ -83,9 +91,43 @@ void GrezBot::UnitMove(const sc2::Unit * unit, std::vector<sc2::Point2D> & dest)
 	if (unit->unit_type == sc2::UNIT_TYPEID::ZERG_OVERLORD) OverlordManager::OverlordMove(unit, dest, *this);
 }
 
+//Checks if it is a good moment to make more workers AND if we shall be doing them.
+//@		Creates new workers for each base (or not)
+/* RULES TO CHECK:
+	-if max workers of gas/minerals are not exceeded
+	-keep a saturation proportion of 1-1,5
+	-HATCHERY CONSTRAINT RULE: Number of hatcheries = 2-3xExpectedEnemyBases
+	-DRONE RULE FOR UNIT TO CREATE:
+		-MINERAL RULING:
+			-REACH 12-16 MINERAL WORKERS / HATCH AS FAST AS POSSIBLE
+		-GAS RULING BASED ON PLAN:
+			-ZERGLING: 0 GAS
+			-BANELING/ROACH 1-2 GASES
+			-RAVAGER/HYDRALISK 2 GASES
+			-MUTALISK 3 GASES
+			-BIGGER --> 6 GASES 
+*/
+void GrezBot::BuildWorkers() {
+	
+}
+
+//Checks if it is a good moment to make a new Hatchery/Expansion and Creates if it's the case
+/* RULES TO CHECK:
+	-HATCHERY CONSTRAINT RULE: Number of hatcheries = 1,5-3xExpectedEnemyBases (except zerg --> Try to keep 1-2xExpectedEnemyBases
+	WHEN TO BUILD:
+	-IF TOTAL_HATCH < 2 --> BUILD A NEW ONE WHEN POSSIBLE AND SATURATE IT
+	-IF TOTAL_HATCH < 1,5-2xExpectedEnemyBases (GENERALIZED)
+		-IF HATCHERY HAVE < 3 LARVAE
+			-IF EXPECTED_MINERALS WHEN 3 IDLE LARVAE ON ALL HATCHERIES >= 300 --> BUILD HATCH + 5 DRONES TO SUPPORT IT
+			-ELSE BUILD 5 MORE DRONES [5 DRONE RULE]
+*/
+void GrezBot::BuildHatchery() {
+
+}
+
 void GrezBot::OnGameEnd()
 {
-	//Gather data ?
+	//Gather data ?	
 }
 
 void GrezBot::setUnits()
