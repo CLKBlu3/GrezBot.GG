@@ -25,7 +25,9 @@ class GrezBot : public sc2::Agent
     BotConfig               m_config;
     TechTree                m_techTree;
     GameCommander           m_gameCommander;
+
 	sc2::Race				m_playerRace[2];
+	ProductionManager		m_production;
 
     std::vector<Unit>       m_allUnits;
     std::vector<CCPosition> m_baseLocations;
@@ -69,5 +71,6 @@ public:
 	void OnUnitCreated(const sc2::Unit* unit);
 	void UnitMove(const sc2::Unit* unit, std::vector<sc2::Point2D> & dest);
 	void BuildWorkers();
+	int getDroneCount();
 	void BuildHatchery();
 };

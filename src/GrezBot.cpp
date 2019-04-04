@@ -17,6 +17,7 @@ GrezBot::GrezBot()
     , m_gameCommander(*this)
     , m_strategy(*this)
     , m_techTree(*this)
+	, m_production(*this)
 {
     
 }
@@ -51,6 +52,7 @@ void GrezBot::OnGameStart()
     m_bases.onStart();
     m_workers.onStart();
 	//Calculate ExpectedEnemyBases and Race
+	m_production.onStart();
     m_gameCommander.onStart();
 }
 
@@ -64,6 +66,8 @@ void GrezBot::OnStep()
     m_strategy.onFrame();
 
     m_gameCommander.onFrame();
+	
+	m_production.onFrame();
 	OverlordManager::onFrame(*this);
 	//Implement this managers for each unit type?
 	//LarvaeManager();
@@ -96,7 +100,6 @@ void GrezBot::UnitMove(const sc2::Unit * unit, std::vector<sc2::Point2D> & dest)
 /* RULES TO CHECK:
 	-if max workers of gas/minerals are not exceeded
 	-keep a saturation proportion of 1-1,5
-	-HATCHERY CONSTRAINT RULE: Number of hatcheries = 2-3xExpectedEnemyBases
 	-DRONE RULE FOR UNIT TO CREATE:
 		-MINERAL RULING:
 			-REACH 12-16 MINERAL WORKERS / HATCH AS FAST AS POSSIBLE
@@ -108,7 +111,17 @@ void GrezBot::UnitMove(const sc2::Unit * unit, std::vector<sc2::Point2D> & dest)
 			-BIGGER --> 6 GASES 
 */
 void GrezBot::BuildWorkers() {
-	
+	int actDrones = getDroneCount();
+}
+
+int GrezBot::getDroneCount() {
+	int actDrones = 0;
+	for (auto & unit : this->GetUnits()) {
+		if (unit.getUnitPtr()->unit_type == sc2::UNIT_TYPEID::ZERG_DRONE) {
+			if (unit.isValid()) actDrones++;
+		}
+	}
+	return actDrones;
 }
 
 //Checks if it is a good moment to make a new Hatchery/Expansion and Creates if it's the case

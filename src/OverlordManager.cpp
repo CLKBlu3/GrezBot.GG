@@ -7,6 +7,16 @@
 
 const int distanceTreshold = 20;
 
+void OverlordManager::onStart(GrezBot& bot) {
+	for (auto & unit : bot.UnitInfo().getUnits(Players::Self)) {
+		if (unit.getType().isOverlord()) {
+			sc2::Point2D enemyLoc = bot.Bases().getPlayerStartingBaseLocation(Players::Enemy)->getPosition();
+			AddNextMove(unit.getUnitPtr(), enemyLoc, bot);
+			break;
+		}
+	}
+}
+
 void OverlordManager::onFrame(GrezBot& bot) {
 	for (auto & unit : bot.UnitInfo().getUnits(Players::Self)) {
 		if (unit.getType().isOverlord()) {
@@ -24,18 +34,14 @@ void OverlordManager::onFrame(GrezBot& bot) {
 void OverlordManager::OnUnitCreated(const sc2::Unit * unit, GrezBot & bot)
 {
 		//Make overlord roam to an expansion or enemy scout enemy area
-		const BaseLocation* enemyLoc = bot.Bases().getPlayerStartingBaseLocation(Players::Enemy);
-		if (enemyLoc) { //enemyLoc is known
-			//scout
-			int scoutDistance = bot.Map().getGroundDistance(unit->pos, enemyLoc->getPosition());
-			bool inEnemyZone = enemyLoc->containsPosition(unit->pos);
-			const sc2::Point2D & dest = enemyLoc->getPosition();
-			const sc2::Point2D & returnPos = fleePos(bot);
-			
-			std::vector<sc2::Point2D> destVector = { dest, returnPos };
-			
-			OverlordMove(unit, destVector, bot);
+		std::vector<sc2::Point2D> nextMove = bot.GetStartLocations();
+		sc2::Point2D nextExp;
+		for (int i = 0; i < 2; ++i) { //automatically add the nextExp of yours and enemy to the pool of possible routes
+			nextExp.x = bot.Bases().getNextExpansion(i).x;
+			nextExp.y = bot.Bases().getNextExpansion(i).y;
+			nextMove.push_back(nextExp);
 		}
+		AddNextMove(unit, nextMove[rand() % nextMove.size()], bot);
 }
 
 //@unit Overlord unit to move
@@ -87,14 +93,15 @@ void OverlordManager::HandleIdleOverlod(const sc2::Unit* unit, GrezBot& bot)
 {
 	if (unit != nullptr) { //valid and idle Overlord
 		//move it to a new location
-		std::vector<sc2::Point2D> nextMove = bot.GetStartLocations();
-		sc2::Point2D nextExp;
-		for (int i = 0; i < 2; ++i) { //automatically add the nextExp of yours and enemy to the pool of possible routes
-			nextExp.x = bot.Bases().getNextExpansion(i).x;
-			nextExp.y = bot.Bases().getNextExpansion(i).y;
-			nextMove.push_back(nextExp);
+		const std::vector<const BaseLocation*> baseLoc = bot.Bases().getBaseLocations();
+		std::vector<sc2::Point2D> destVector;
+		for (const BaseLocation* bL : baseLoc) { //new random location
+			int scoutDistance = bot.Map().getGroundDistance(unit->pos, bL->getPosition());
+			destVector.push_back(bL->getPosition());
 		}
-		AddNextMove(unit, nextMove[rand()%nextMove.size()], bot);
+
+		const sc2::Point2D & dest = destVector[rand() % destVector.size()];
+		AddNextMove(unit, dest, bot);
 	}
 }
 
