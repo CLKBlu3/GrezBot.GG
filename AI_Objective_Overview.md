@@ -64,7 +64,9 @@ it will help you :)
 - [ ] @Hydra den -> Muscular Augments (Hydra upgrade) + Gliar Reconstitution (Roach speed)
 - [ ] Mass army Following Army Management idea (2:1 Roach:Hydra ratio)
 - [ ] @+1/+1 -> Take +2/+2
-- [ ] @+2/+2 -> Take +3/+3
+- [ ] @3 base mineral + gas saturation -> Infestation Pit
+- [ ] @Infestation Pit -> Hive
+- [ ] @Hive -> Take +3/+3
 
 ##### Additional points
 - [ ] From this point -> 1x Queen when each expansion is finished
@@ -81,7 +83,10 @@ it will help you :)
 - [ ] Try to make walls with evo chambers
 - [ ] Redo destroyed building (evo chambers/pool/etc)
 
-
+##### Late Game Additions
+- [ ] Get Spire while building infestation pit and transition into broodlords late game (+ Great Spire @Hive)?
+- [ ] Get Ultralisk Cavern and transition into Ultralisks?
+- [ ] Composition: 1/2 Hydra, 1/3 Ultra/Broodlord, 1/6 Roach?? idk
 
 
 
