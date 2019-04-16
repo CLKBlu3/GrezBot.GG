@@ -23,7 +23,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerWorkingDirectory>$(ProjectDir)/../bin/</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>-e D:\Programas\Blizzard\StarCraftII\Versions\Base72282\SC2_x64.exe</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-e D:\Programas\Blizzard\StarCraftII\Versions\Base73286\SC2_x64.exe</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerWorkingDirectory>$(ProjectDir)/../bin/</LocalDebuggerWorkingDirectory>

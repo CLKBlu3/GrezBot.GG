@@ -8,6 +8,7 @@
 const int distanceTreshold = 20;
 
 void OverlordManager::onStart(GrezBot& bot) {
+	//OnStart --> Move to enemy Natural, if opponent is not building when we arrive --> Prepare for all-in?
 	for (auto & unit : bot.UnitInfo().getUnits(Players::Self)) {
 		if (unit.getType().isOverlord()) {
 			sc2::Point2D enemyLoc = bot.Bases().getPlayerStartingBaseLocation(Players::Enemy)->getPosition();
@@ -33,15 +34,11 @@ void OverlordManager::onFrame(GrezBot& bot) {
 //@bot	Bot that called this func
 void OverlordManager::OnUnitCreated(const sc2::Unit * unit, GrezBot & bot)
 {
-		//Make overlord roam to an expansion or enemy scout enemy area
-		std::vector<sc2::Point2D> nextMove = bot.GetStartLocations();
+		//Make overlord roam to our natural
 		sc2::Point2D nextExp;
-		for (int i = 0; i < 2; ++i) { //automatically add the nextExp of yours and enemy to the pool of possible routes
-			nextExp.x = bot.Bases().getNextExpansion(i).x;
-			nextExp.y = bot.Bases().getNextExpansion(i).y;
-			nextMove.push_back(nextExp);
-		}
-		AddNextMove(unit, nextMove[rand() % nextMove.size()], bot);
+		nextExp.x = bot.Bases().getNextExpansion(Players::Self).x;
+		nextExp.y = bot.Bases().getNextExpansion(Players::Self).y;
+		AddNextMove(unit, nextExp, bot);
 }
 
 //@unit Overlord unit to move

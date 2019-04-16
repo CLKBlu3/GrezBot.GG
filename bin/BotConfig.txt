@@ -78,16 +78,9 @@
             "Zerg_ZerglingRush"     : 
             { 
                 "Race"              : "Zerg",    
-                "OpeningBuildOrder" : ["SpawningPool", "Drone", "Overlord", "Drone", "Zergling", "Zergling", "Zergling", "Zergling", "Zergling", "Zergling", "Zergling", "Zergling"], 
+                "OpeningBuildOrder" : [], 
                 "ScoutCondition"    : [ ["GameFrame"], ">=", [ 100 ] ],
                 "AttackCondition"   : [ ["Self", "Zergling"], ">", [ 0 ] ]    
-            },
-            "Zerg_ProxyRoach"      : 
-            { 
-                "Race"              : "Zerg",    
-                "OpeningBuildOrder" : ["SpawningPool", "Drone", "Overlord", "Drone", "Drone", "Extractor", "Zergling", "Zergling", "Drone", "Drone", "Hatchery", "Zergling", "Overlord", "Drone", "RoachWarren", "Drone", "Drone", "Drone", "Drone", "Roach", "Overlord", "Roach", "Roach", "Roach", "Roach", "Overlord", "Roach", "Roach", "Roach", "Roach", "Roach", "Roach", "Roach"],
-                "ScoutCondition"    : [ ["self", "SpawningPool"], ">=", [ 1 ] ],
-                "AttackCondition"   : [ [["Self", "Roach"], ">=", [ 12 ]], "AND", [["Self", "Overlord"], ">=", [ 1 ]] ]    
             }
         }
     }
